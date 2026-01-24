@@ -1,0 +1,176 @@
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+
+// --- ASSETS (IMÁGENES Y SONIDOS) ---
+const imgArbol = new Image(); imgArbol.src = 'Arbol.png';
+const imgCono = new Image(); imgCono.src = 'cono.png';
+
+const carImages = {
+    'Honda Fit': new Image(),
+    'Ferrari': new Image(),
+    'Formula 1': new Image(),
+    'Porsche': new Image()
+};
+
+// Asegúrate de que los nombres coincidan exactamente con tus archivos
+carImages['Honda Fit'].src = 'Honda Fit.png';
+carImages['Ferrari'].src = 'Ferrari.png';
+carImages['Formula 1'].src = 'Formula 1.png';
+carImages['Porsche'].src = 'Porsche.png';
+
+const music = new Audio('Music.wav'); music.loop = true;
+const crashSound = new Audio('choque.wav');
+
+// --- VARIABLES DE ESTADO ---
+let carSelected = null;
+let carX = 175, carY = 400;
+let score = 0, record = 0, speed = 8;
+let gameRunning = false;
+let keys = {};
+let trees = [], obstacles = [], offsetRoad = 0;
+
+// --- LÓGICA DEL BOSQUE ---
+function initTrees() {
+    trees = [];
+    for(let i=0; i<25; i++) {
+        trees.push({
+            x: Math.random() < 0.5 ? Math.random() * 40 : 350 + Math.random() * 50,
+            y: Math.random() * 500
+        });
+    }
+}
+
+// --- CONTROLES ---
+window.addEventListener('keydown', e => keys[e.code] = true);
+window.addEventListener('keyup', e => keys[e.code] = false);
+
+function selectCar(name) {
+    carSelected = name;
+    document.getElementById('selected-txt').innerText = "Seleccionado: " + name;
+    document.getElementById('start-btn').disabled = false;
+}
+
+function startGame() {
+    document.getElementById('main-menu').classList.add('hidden');
+    document.getElementById('game-over').classList.add('hidden');
+    carX = 175; score = 0; speed = 8;
+    obstacles = [];
+    initTrees();
+    gameRunning = true;
+    music.currentTime = 0;
+    music.play();
+    requestAnimationFrame(update);
+}
+
+// --- BUCLE PRINCIPAL ---
+function update() {
+    if(!gameRunning) return;
+
+    // Movimiento del coche
+    if(keys['ArrowLeft'] && carX > 45) carX -= 8;
+    if(keys['ArrowRight'] && carX < 315) carX += 8;
+
+    // Animación de carretera
+    offsetRoad = (offsetRoad + speed) % 50;
+
+    // Movimiento de árboles
+    trees.forEach(t => {
+        t.y += speed;
+        if(t.y > 500) {
+            t.y = -60;
+            t.x = Math.random() < 0.5 ? Math.random() * 40 : 350 + Math.random() * 50;
+        }
+    });
+
+    // Generación de obstáculos
+    if(obstacles.length === 0) {
+        let lanes = [85, 165, 245, 325];
+        let count = Math.random() > 0.5 ? 2 : 3;
+        for(let i=0; i<count; i++) {
+            let x = lanes.splice(Math.floor(Math.random() * lanes.length), 1)[0];
+            obstacles.push({x: x, y: -100 - (i * 150)});
+        }
+    }
+
+    // Movimiento y colisión de obstáculos
+    obstacles.forEach((obs, index) => {
+        obs.y += speed;
+        
+        // Caja de colisión (Hitbox)
+        if(Math.abs((carX + 25) - obs.x) < 35 && Math.abs((carY + 40) - obs.y) < 40) {
+            gameOver();
+        }
+
+        if(obs.y > 550) obstacles.splice(index, 1);
+    });
+
+    // Subir dificultad
+    if(obstacles.length === 0) {
+        score++;
+        speed = 8 + Math.floor(score / 3);
+    }
+
+    draw();
+    requestAnimationFrame(update);
+}
+
+// --- RENDERIZADO ---
+function draw() {
+    ctx.clearRect(0, 0, 400, 500);
+    
+    // Pasto (Fondo ya está en CSS, pero dibujamos árboles encima)
+    trees.forEach(t => ctx.drawImage(imgArbol, t.x - 30, t.y - 30, 70, 70));
+
+    // Asfalto
+    ctx.fillStyle = "#2a2a2a";
+    ctx.fillRect(40, 0, 320, 500);
+    
+    // Líneas laterales
+    ctx.strokeStyle = "white"; ctx.lineWidth = 4;
+    ctx.strokeRect(42, -10, 316, 520);
+
+    // Líneas amarillas centrales
+    ctx.fillStyle = "yellow";
+    for(let i = -50; i < 550; i += 50) {
+        ctx.fillRect(196, i + offsetRoad, 8, 30);
+    }
+
+    // Dibujar Coche Jugador
+    const img = carImages[carSelected];
+    ctx.save();
+    if(carSelected === 'Porsche') {
+        // Rotación especial para tu imagen de Porsche
+        ctx.translate(carX + 25, carY + 40);
+        ctx.rotate(-Math.PI / 2); 
+        ctx.drawImage(img, -40, -25, 80, 50);
+    } else {
+        ctx.drawImage(img, carX, carY, 50, 80);
+    }
+    ctx.restore();
+
+    // Dibujar Obstáculos
+    obstacles.forEach(obs => ctx.drawImage(imgCono, obs.x - 20, obs.y - 20, 40, 40));
+
+    // Texto de Puntaje
+    ctx.fillStyle = "white";
+    ctx.font = "bold 18px Arial";
+    ctx.shadowBlur = 4; ctx.shadowColor = "black";
+    ctx.fillText(`PUNTOS: ${score}`, 15, 30);
+    ctx.fillText(`RÉCORD: ${record}`, 15, 55);
+    ctx.shadowBlur = 0;
+}
+
+function gameOver() {
+    gameRunning = false;
+    music.pause();
+    crashSound.play();
+    if(score > record) record = score;
+    document.getElementById('final-score').innerText = "Puntaje Final: " + score;
+    document.getElementById('game-over').classList.remove('hidden');
+}
+
+function restartGame() { startGame(); }
+function showMenu() {
+    document.getElementById('game-over').classList.add('hidden');
+    document.getElementById('main-menu').classList.remove('hidden');
+}
