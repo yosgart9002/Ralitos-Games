@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ralitos Racing Speedway 🏁</title>
+    <style>
+        body {
+            background-color: #222;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+        #game-container {
+            position: relative;
+            width: 400px;
+            height: 500px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+        canvas {
+            background-color: forestgreen;
+            display: block;
+        }
+        /* Menús */
+        .overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            text-align: center;
+        }
+        .hidden { display: none; }
+        
+        button {
+            width: 200px; padding: 10px; margin: 5px;
+            font-size: 16px; font-weight: bold; border: 2px solid white;
+            cursor: pointer; border-radius: 5px;
+        }
+        .btn-green { background: green; color: white; }
+        .btn-yellow { background: yellow; color: black; }
+        .btn-red { background: #ff6666; color: white; }
+        .btn-start { background: #90ee90; color: black; }
+
+        h1 { background: red; padding: 10px 20px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <canvas id="gameCanvas" width="400" height="500"></canvas>
+
+    <div id="main-menu" class="overlay">
+        <h2>🚗 Selecciona tu Coche 🏁</h2>
+        <div id="car-options">
+            <button onclick="selectCar('Honda Fit')">Honda Fit</button>
+            <button onclick="selectCar('Ferrari')">Ferrari</button>
+            <button onclick="selectCar('Formula 1')">Formula 1</button>
+            <button onclick="selectCar('Porsche')">Porsche</button>
+        </div>
+        <p id="selected-txt">Seleccionado: Ninguno</p>
+        <button id="start-btn" class="btn-start" disabled onclick="startGame()">¡Correr!</button>
+    </div>
+
+    <div id="game-over" class="overlay hidden">
+        <h1>💥 GAME OVER 💥</h1>
+        <p id="final-score">Puntaje: 0</p>
+        <button class="btn-green" onclick="restartGame()">🔁 Play Again</button>
+        <button class="btn-yellow" onclick="showMenu()">🚗 Change Car</button>
+        <button class="btn-red" onclick="location.reload()">❌ Exit</button>
+    </div>
+</div>
+
+<script src="game.js"></script>
+</body>
+</html>
