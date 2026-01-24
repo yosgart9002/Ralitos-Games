@@ -6,6 +6,9 @@ const BASE_WIDTH = 400, BASE_HEIGHT = 500;
 let scale = 1, offsetX = 0, offsetY = 0;
 
 function resizeCanvas() {
+    // set CSS size to match viewport and remove default body margin
+    canvas.style.width = window.innerWidth + 'px';
+    canvas.style.height = window.innerHeight + 'px';
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     scale = Math.min(canvas.width / BASE_WIDTH, canvas.height / BASE_HEIGHT);
@@ -15,6 +18,13 @@ function resizeCanvas() {
 
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
+
+// Remove page margins so centering math aligns with viewport
+document.body.style.margin = '0';
+canvas.style.display = 'block';
+canvas.style.position = 'fixed';
+canvas.style.left = '0';
+canvas.style.top = '0';
 
 // --- ASSETS (IMÁGENES Y SONIDOS) ---
 const imgArbol = new Image(); imgArbol.src = 'Arbol.png';
