@@ -1,6 +1,21 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
+// --- FULLSCREEN & SCALING (logical base coords: 400x500) ---
+const BASE_WIDTH = 400, BASE_HEIGHT = 500;
+let scale = 1, offsetX = 0, offsetY = 0;
+
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    scale = Math.min(canvas.width / BASE_WIDTH, canvas.height / BASE_HEIGHT);
+    offsetX = (canvas.width - BASE_WIDTH * scale) / 2;
+    offsetY = (canvas.height - BASE_HEIGHT * scale) / 2;
+}
+
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
 // --- ASSETS (IMÁGENES Y SONIDOS) ---
 const imgArbol = new Image(); imgArbol.src = 'Arbol.png';
 const imgCono = new Image(); imgCono.src = 'cono.png';
@@ -24,7 +39,10 @@ const crashSound = new Audio('choque.wav');
 // --- VARIABLES DE ESTADO ---
 let carSelected = null;
 let carX = 175, carY = 400;
-let score = 0, record = 0, speed = 8;
+let score = 0, record = 0;
+// Reduce base speed (initial) as requested
+const baseSpeed = 4;
+let speed = baseSpeed;
 let gameRunning = false;
 let keys = {};
 let trees = [], obstacles = [], offsetRoad = 0;
@@ -53,7 +71,7 @@ function selectCar(name) {
 function startGame() {
     document.getElementById('main-menu').classList.add('hidden');
     document.getElementById('game-over').classList.add('hidden');
-    carX = 175; score = 0; speed = 8;
+    carX = 175; score = 0; speed = baseSpeed;
     obstacles = [];
     initTrees();
     gameRunning = true;
@@ -107,7 +125,7 @@ function update() {
     // Subir dificultad
     if(obstacles.length === 0) {
         score++;
-        speed = 8 + Math.floor(score / 3);
+        speed = baseSpeed + Math.floor(score / 3);
     }
 
     draw();
@@ -116,8 +134,11 @@ function update() {
 
 // --- RENDERIZADO ---
 function draw() {
-    ctx.clearRect(0, 0, 400, 500);
-    
+    // clear full canvas in screen-space, then apply logical scale transform
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.setTransform(scale, 0, 0, scale, offsetX, offsetY);
+
     // Pasto (Fondo ya está en CSS, pero dibujamos árboles encima)
     trees.forEach(t => ctx.drawImage(imgArbol, t.x - 30, t.y - 30, 70, 70));
 
