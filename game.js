@@ -149,7 +149,21 @@ function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.setTransform(scale, 0, 0, scale, offsetX, offsetY);
 
-    // Pasto (Fondo ya está en CSS, pero dibujamos árboles encima)
+    // Pasto: rellenar las orillas con múltiples copias de Arbol.png
+    const leftXs = [20, 5, 35];
+    const rightXs = [380, 365, 395];
+    for (let x of leftXs) {
+        for (let y = -100; y < 600; y += 80) {
+            ctx.drawImage(imgArbol, x - 30, y - 30, 70, 70);
+        }
+    }
+    for (let x of rightXs) {
+        for (let y = -100; y < 600; y += 80) {
+            ctx.drawImage(imgArbol, x - 30, y - 30, 70, 70);
+        }
+    }
+
+    // Árboles en movimiento (por encima del fondo)
     trees.forEach(t => ctx.drawImage(imgArbol, t.x - 30, t.y - 30, 70, 70));
 
     // Asfalto
