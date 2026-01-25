@@ -118,6 +118,10 @@ function update() {
             let x = lanes.splice(Math.floor(Math.random() * lanes.length), 1)[0];
             obstacles.push({x: x, y: -100 - (i * 150)});
         }
+        // A veces generamos un cono en el centro de la carretera
+        if(Math.random() > 0.5) {
+            obstacles.push({x: 196, y: -150});
+        }
     }
 
     // Movimiento y colisión de obstáculos
@@ -150,15 +154,17 @@ function draw() {
     ctx.setTransform(scale, 0, 0, scale, offsetX, offsetY);
 
     // Pasto: rellenar las orillas con múltiples copias de Arbol.png
+    // usamos el offset de la carretera para dar movimiento vertical a las orillas
+    const treeOffset = offsetRoad % 80;
     const leftXs = [20, 5, 35];
     const rightXs = [380, 365, 395];
     for (let x of leftXs) {
-        for (let y = -100; y < 600; y += 80) {
+        for (let y = -140 + treeOffset; y < 600; y += 80) {
             ctx.drawImage(imgArbol, x - 30, y - 30, 70, 70);
         }
     }
     for (let x of rightXs) {
-        for (let y = -100; y < 600; y += 80) {
+        for (let y = -140 + treeOffset; y < 600; y += 80) {
             ctx.drawImage(imgArbol, x - 30, y - 30, 70, 70);
         }
     }
@@ -186,7 +192,9 @@ function draw() {
     if(carSelected === 'Porsche') {
         // Rotación especial para tu imagen de Porsche
         ctx.translate(carX + 25, carY + 40);
-        ctx.rotate(-Math.PI / 2); 
+        // rotar 90 grados a la derecha (clockwise)
+        ctx.rotate(Math.PI / 2);
+        // usar mismo tamaño que la imagen horizontal (80x50) para que quede vertical
         ctx.drawImage(img, -40, -25, 80, 50);
     } else {
         ctx.drawImage(img, carX, carY, 50, 80);
