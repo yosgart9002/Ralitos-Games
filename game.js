@@ -50,7 +50,7 @@ const crashSound = new Audio('choque.wav');
 
 // --- VARIABLES DE ESTADO ---
 let carSelected = null;
-let carX = 350, carY = 400;
+let carX = 375, carY = 400;
 let score = 0, record = 0;
 // Reduce base speed (initial) as requested
 const baseSpeed = 2;
@@ -131,8 +131,8 @@ function update() {
     if(!gameRunning) return;
 
     // Movimiento del coche
-    if(keys['ArrowLeft'] && carX > 90) carX -= 4;
-    if(keys['ArrowRight'] && carX < 620) carX += 4;
+    if(keys['ArrowLeft'] && carX > 140) carX -= 4;
+    if(keys['ArrowRight'] && carX < 570) carX += 4;
 
     // Animación de carretera
     offsetRoad = (offsetRoad + speed) % 50;
@@ -192,8 +192,8 @@ function draw() {
     // Pasto: rellenar las orillas con múltiples copias de Arbol.png
     // usamos el offset de la carretera para dar movimiento vertical a las orillas
     const treeOffset = offsetRoad % 80;
-    const leftXs = [40, 10, 70];
-    const rightXs = [760, 730, 790];
+    const leftXs = [80, 50, 110];
+    const rightXs = [720, 690, 750];
     for (let x of leftXs) {
         for (let y = -140 + treeOffset; y < 600; y += 80) {
             ctx.drawImage(imgArbol, x - 30, y - 30, 70, 70);
@@ -211,25 +211,25 @@ function draw() {
     // Gradas a los costados (derecha e izquierda) — dibujadas después de los árboles
     // repetimos verticalmente para cubrir la pantalla y usamos el mismo treeOffset para movimiento
     // Colocar las gradas más alejadas del centro para no tapar los árboles
-    const standLeftX = -300; // lado izquierdo, más afuera
-    const standRightX = BASE_WIDTH + 100; // lado derecho, más afuera
+    const standLeftX = 0; // lado izquierdo, más cerca
+    const standRightX = 600; // lado derecho, más cerca
     for (let y = -140 + treeOffset; y < 600; y += 150) {
-        ctx.drawImage(imgGradasIzq, standLeftX, y, 280, 280);
-        ctx.drawImage(imgGradas, standRightX, y, 280, 280);
+        ctx.drawImage(imgGradasIzq, standLeftX, y, 350, 350);
+        ctx.drawImage(imgGradas, standRightX, y, 350, 350);
     }
 
     // Asfalto
     ctx.fillStyle = "#2a2a2a";
-    ctx.fillRect(80, 0, 640, 500);
+    ctx.fillRect(200, 0, 400, 500);
     
     // Líneas laterales
     ctx.strokeStyle = "white"; ctx.lineWidth = 4;
-    ctx.strokeRect(82, -10, 636, 520);
+    ctx.strokeRect(202, -10, 396, 520);
 
     // Líneas amarillas centrales
     ctx.fillStyle = "yellow";
     for(let i = -50; i < 550; i += 50) {
-        ctx.fillRect(392, i + offsetRoad, 16, 30);
+        ctx.fillRect(400, i + offsetRoad, 16, 30);
     }
 
     // Dibujar Coche Jugador (todas las imágenes se dibujan igual)
