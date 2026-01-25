@@ -95,8 +95,8 @@ function update() {
     if(!gameRunning) return;
 
     // Movimiento del coche
-    if(keys['ArrowLeft'] && carX > 45) carX -= 8;
-    if(keys['ArrowRight'] && carX < 315) carX += 8;
+    if(keys['ArrowLeft'] && carX > 45) carX -= 4;
+    if(keys['ArrowRight'] && carX < 315) carX += 4;
 
     // Animación de carretera
     offsetRoad = (offsetRoad + speed) % 50;
