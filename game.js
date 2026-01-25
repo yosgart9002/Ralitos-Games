@@ -1,8 +1,8 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-// --- FULLSCREEN & SCALING (logical base coords: 400x500) ---
-const BASE_WIDTH = 1920, BASE_HEIGHT = 1080;
+// --- FULLSCREEN & SCALING (logical base coords: 800x500) ---
+const BASE_WIDTH = 800, BASE_HEIGHT = 500;
 let scale = 1, offsetX = 0, offsetY = 0;
 
 function resizeCanvas() {
@@ -50,7 +50,7 @@ const crashSound = new Audio('choque.wav');
 
 // --- VARIABLES DE ESTADO ---
 let carSelected = null;
-let carX = 175, carY = 400;
+let carX = 350, carY = 400;
 let score = 0, record = 0;
 // Reduce base speed (initial) as requested
 const baseSpeed = 2;
@@ -117,7 +117,7 @@ function selectCar(name) {
 function startGame() {
     document.getElementById('main-menu').classList.add('hidden');
     document.getElementById('game-over').classList.add('hidden');
-    carX = 175; score = 0; speed = baseSpeed;
+    carX = 350; score = 0; speed = baseSpeed;
     obstacles = [];
     initTrees();
     gameRunning = true;
@@ -131,8 +131,8 @@ function update() {
     if(!gameRunning) return;
 
     // Movimiento del coche
-    if(keys['ArrowLeft'] && carX > 45) carX -= 4;
-    if(keys['ArrowRight'] && carX < 315) carX += 4;
+    if(keys['ArrowLeft'] && carX > 90) carX -= 4;
+    if(keys['ArrowRight'] && carX < 620) carX += 4;
 
     // Animación de carretera
     offsetRoad = (offsetRoad + speed) % 50;
@@ -142,13 +142,13 @@ function update() {
         t.y += speed;
         if(t.y > 500) {
             t.y = -60;
-            t.x = Math.random() < 0.5 ? Math.random() * 40 : 350 + Math.random() * 50;
+            t.x = Math.random() < 0.5 ? Math.random() * 80 : 700 + Math.random() * 100;
         }
     });
 
     // Generación de obstáculos
     if(obstacles.length === 0) {
-        let lanes = [85, 165, 245, 325];
+        let lanes = [170, 330, 490, 650];
         let count = Math.random() > 0.5 ? 2 : 3;
         for(let i=0; i<count; i++) {
             let x = lanes.splice(Math.floor(Math.random() * lanes.length), 1)[0];
@@ -156,7 +156,7 @@ function update() {
         }
         // A veces generamos un cono en el centro de la carretera
         if(Math.random() > 0.5) {
-            obstacles.push({x: 196, y: -150});
+            obstacles.push({x: 392, y: -150});
         }
     }
 
@@ -192,8 +192,8 @@ function draw() {
     // Pasto: rellenar las orillas con múltiples copias de Arbol.png
     // usamos el offset de la carretera para dar movimiento vertical a las orillas
     const treeOffset = offsetRoad % 80;
-    const leftXs = [20, 5, 35];
-    const rightXs = [380, 365, 395];
+    const leftXs = [40, 10, 70];
+    const rightXs = [760, 730, 790];
     for (let x of leftXs) {
         for (let y = -140 + treeOffset; y < 600; y += 80) {
             ctx.drawImage(imgArbol, x - 30, y - 30, 70, 70);
@@ -211,8 +211,8 @@ function draw() {
     // Gradas a los costados (derecha e izquierda) — dibujadas después de los árboles
     // repetimos verticalmente para cubrir la pantalla y usamos el mismo treeOffset para movimiento
     // Colocar las gradas más alejadas del centro para no tapar los árboles
-    const standLeftX = -280; // lado izquierdo, más afuera
-    const standRightX = BASE_WIDTH + 80; // lado derecho, más afuera
+    const standLeftX = -300; // lado izquierdo, más afuera
+    const standRightX = BASE_WIDTH + 100; // lado derecho, más afuera
     for (let y = -140 + treeOffset; y < 600; y += 150) {
         ctx.drawImage(imgGradasIzq, standLeftX, y, 280, 280);
         ctx.drawImage(imgGradas, standRightX, y, 280, 280);
@@ -220,16 +220,16 @@ function draw() {
 
     // Asfalto
     ctx.fillStyle = "#2a2a2a";
-    ctx.fillRect(40, 0, 320, 500);
+    ctx.fillRect(80, 0, 640, 500);
     
     // Líneas laterales
     ctx.strokeStyle = "white"; ctx.lineWidth = 4;
-    ctx.strokeRect(42, -10, 316, 520);
+    ctx.strokeRect(82, -10, 636, 520);
 
     // Líneas amarillas centrales
     ctx.fillStyle = "yellow";
     for(let i = -50; i < 550; i += 50) {
-        ctx.fillRect(196, i + offsetRoad, 8, 30);
+        ctx.fillRect(392, i + offsetRoad, 16, 30);
     }
 
     // Dibujar Coche Jugador (todas las imágenes se dibujan igual)
