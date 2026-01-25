@@ -210,8 +210,9 @@ function draw() {
 
     // Gradas a los costados (derecha e izquierda) — dibujadas después de los árboles
     // repetimos verticalmente para cubrir la pantalla y usamos el mismo treeOffset para movimiento
-    const standLeftX = -20; // lado izquierdo
-    const standRightX = BASE_WIDTH - 60; // lado derecho
+    // Colocar las gradas más alejadas del centro para no tapar los árboles
+    const standLeftX = -200; // lado izquierdo, más afuera
+    const standRightX = BASE_WIDTH + 40; // lado derecho, más afuera
     for (let y = -140 + treeOffset; y < 600; y += 180) {
         ctx.drawImage(imgGradasIzq, standLeftX, y, 120, 120);
         ctx.drawImage(imgGradas, standRightX, y, 120, 120);
