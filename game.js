@@ -151,7 +151,7 @@ function update() {
         let count = Math.random() > 0.5 ? 2 : 3;
         for(let i=0; i<count; i++) {
             // Generar posición X aleatoria dentro del ancho de la carretera (200-600)
-            let x = 220 + Math.random() * 160; // rango de 220 a 380 dentro de la carretera
+            let x = 210 + Math.random() * 380; // rango de 210 a 590 dentro de la carretera
             obstacles.push({x: x, y: -100 - (i * 150)});
         }
     }
