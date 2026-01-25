@@ -186,20 +186,9 @@ function draw() {
         ctx.fillRect(196, i + offsetRoad, 8, 30);
     }
 
-    // Dibujar Coche Jugador
+    // Dibujar Coche Jugador (todas las imágenes se dibujan igual)
     const img = carImages[carSelected];
-    ctx.save();
-    if(carSelected === 'Porsche') {
-        // Rotación especial para tu imagen de Porsche (90° a la izquierda)
-        ctx.translate(carX + 25, carY + 40);
-        // rotar 90 grados a la izquierda (counter-clockwise)
-        ctx.rotate(-Math.PI / 2);
-        // usar mismo tamaño que la imagen horizontal (80x50) para que quede vertical
-        ctx.drawImage(img, -40, -25, 80, 50);
-    } else {
-        ctx.drawImage(img, carX, carY, 50, 80);
-    }
-    ctx.restore();
+    ctx.drawImage(img, carX, carY, 50, 80);
 
     // Dibujar Obstáculos
     obstacles.forEach(obs => ctx.drawImage(imgCono, obs.x - 20, obs.y - 20, 40, 40));
