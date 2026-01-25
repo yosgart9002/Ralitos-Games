@@ -1,7 +1,7 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-// --- FULLSCREEN & SCALING (logical base coords: 1920x1080) ---
+// --- FULLSCREEN & SCALING (logical base coords: 400x500) ---
 const BASE_WIDTH = 1920, BASE_HEIGHT = 1080;
 let scale = 1, offsetX = 0, offsetY = 0;
 
