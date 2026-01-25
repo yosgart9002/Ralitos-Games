@@ -211,11 +211,11 @@ function draw() {
     // Gradas a los costados (derecha e izquierda) — dibujadas después de los árboles
     // repetimos verticalmente para cubrir la pantalla y usamos el mismo treeOffset para movimiento
     // Colocar las gradas más alejadas del centro para no tapar los árboles
-    const standLeftX = -200; // lado izquierdo, más afuera
-    const standRightX = BASE_WIDTH + 40; // lado derecho, más afuera
-    for (let y = -140 + treeOffset; y < 600; y += 180) {
-        ctx.drawImage(imgGradasIzq, standLeftX, y, 200, 200);
-        ctx.drawImage(imgGradas, standRightX, y, 200, 200);
+    const standLeftX = -280; // lado izquierdo, más afuera
+    const standRightX = BASE_WIDTH + 80; // lado derecho, más afuera
+    for (let y = -140 + treeOffset; y < 600; y += 150) {
+        ctx.drawImage(imgGradasIzq, standLeftX, y, 280, 280);
+        ctx.drawImage(imgGradas, standRightX, y, 280, 280);
     }
 
     // Asfalto
