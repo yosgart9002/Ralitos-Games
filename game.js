@@ -29,6 +29,8 @@ canvas.style.top = '0';
 // --- ASSETS (IMÁGENES Y SONIDOS) ---
 const imgArbol = new Image(); imgArbol.src = 'Arbol.png';
 const imgCono = new Image(); imgCono.src = 'cono.png';
+const imgGradas = new Image(); imgGradas.src = 'Gradas.png';
+const imgGradasIzq = new Image(); imgGradasIzq.src = 'Gradas izq.png';
 
 const carImages = {
     'Honda Fit': new Image(),
@@ -205,6 +207,15 @@ function draw() {
 
     // Árboles en movimiento (por encima del fondo)
     trees.forEach(t => ctx.drawImage(imgArbol, t.x - 30, t.y - 30, 70, 70));
+
+    // Gradas a los costados (derecha e izquierda) — dibujadas después de los árboles
+    // repetimos verticalmente para cubrir la pantalla y usamos el mismo treeOffset para movimiento
+    const standLeftX = -20; // lado izquierdo
+    const standRightX = BASE_WIDTH - 60; // lado derecho
+    for (let y = -140 + treeOffset; y < 600; y += 180) {
+        ctx.drawImage(imgGradasIzq, standLeftX, y, 120, 120);
+        ctx.drawImage(imgGradas, standRightX, y, 120, 120);
+    }
 
     // Asfalto
     ctx.fillStyle = "#2a2a2a";
