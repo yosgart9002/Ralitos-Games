@@ -53,7 +53,7 @@ const baseSpeed = 3;
 let speed = baseSpeed;
 let gameRunning = false;
 let keys = {};
-let trees = [], obstacles = [], powerUps = [], particles = [];
+let obstacles = [], powerUps = [], particles = [];
 let offsetRoad = 0;
 
 // Estados de Power-up
@@ -75,7 +75,7 @@ function createSmoke() {
     }
 }
 
-// --- CONTROLES (TECLADO Y TÁCTIL) ---
+// --- CONTROLES ---
 window.addEventListener('keydown', e => keys[e.code] = true);
 window.addEventListener('keyup', e => keys[e.code] = false);
 
@@ -107,21 +107,10 @@ function startGame() {
     carX = 375; score = 0; speed = baseSpeed;
     obstacles = []; powerUps = []; particles = [];
     hasShield = false; turboActive = false;
-    initTrees();
     gameRunning = true;
     music.currentTime = 0;
     music.play().catch(() => {});
     requestAnimationFrame(update);
-}
-
-function initTrees() {
-    trees = [];
-    for(let i=0; i<20; i++) {
-        trees.push({
-            x: Math.random() < 0.5 ? 120 + Math.random() * 60 : 620 + Math.random() * 60,
-            y: Math.random() * 500
-        });
-    }
 }
 
 // --- BUCLE PRINCIPAL ---
@@ -130,7 +119,6 @@ function update() {
 
     if (shakeIntensity > 0) shakeIntensity *= 0.9;
 
-    // Lógica de Turbo
     if (turboActive) {
         turboTimer--;
         speed = baseSpeed * 2.5;
@@ -142,16 +130,8 @@ function update() {
     if(keys['ArrowLeft'] && carX > 210) carX -= 7;
     if(keys['ArrowRight'] && carX < 540) carX += 7;
 
-    offsetRoad = (offsetRoad + speed) % 50;
+    offsetRoad = (offsetRoad + speed) % 150;
     if (Math.random() > 0.4) createSmoke();
-
-    trees.forEach(t => {
-        t.y += speed;
-        if(t.y > 500) { 
-            t.y = -60; 
-            t.x = Math.random() < 0.5 ? 120 + Math.random() * 60 : 620 + Math.random() * 60; 
-        }
-    });
 
     if(obstacles.length === 0) {
         obstacles.push({x: 230 + Math.random() * 340, y: -100});
@@ -197,24 +177,39 @@ function draw() {
     let sy = (Math.random() - 0.5) * shakeIntensity;
     ctx.setTransform(scale, 0, 0, scale, offsetX + sx, offsetY + sy);
 
-    // Fondo verde total
+    // 1. Fondo base verde
     ctx.fillStyle = "forestgreen";
     ctx.fillRect(-500, -500, 1800, 1500);
 
-    const treeOffset = offsetRoad % 150;
+    const scrollY = offsetRoad;
 
-    // 1. Capa de Gradas (Bordes exteriores para cubrir huecos)
+    // 2. Capa de Gradas (Bordes exteriores)
     const standLeftX = -250; 
     const standRightX = 700; 
-    for (let y = -300 + treeOffset; y < 800; y += 300) {
+    for (let y = -400 + scrollY; y < 800; y += 350) {
         ctx.drawImage(imgGradasIzq, standLeftX, y, 350, 350);
         ctx.drawImage(imgGradas, standRightX, y, 350, 350);
     }
 
-    // 2. Capa de Árboles (Entre gradas y carretera)
-    trees.forEach(t => ctx.drawImage(imgArbol, t.x - 30, t.y - 30, 70, 70));
+    // 3. CAPA DE BOSQUE DENSO (Rellenar huecos verdes)
+    // Dibujamos múltiples columnas de árboles muy juntos para que se traslapen
+    // Lado Izquierdo (entre x=100 y x=200)
+    for (let x = 100; x < 200; x += 40) {
+        for (let y = -150 + scrollY; y < 650; y += 30) {
+            // Añadimos un pequeño desvío aleatorio en X basado en Y para que se vea natural
+            let offsetXTree = (Math.sin(y * 0.1) * 10);
+            ctx.drawImage(imgArbol, x + offsetXTree - 35, y - 35, 100, 100);
+        }
+    }
+    // Lado Derecho (entre x=600 y x=700)
+    for (let x = 600; x < 700; x += 40) {
+        for (let y = -150 + scrollY; y < 650; y += 30) {
+            let offsetXTree = (Math.cos(y * 0.1) * 10);
+            ctx.drawImage(imgArbol, x + offsetXTree - 35, y - 35, 100, 100);
+        }
+    }
 
-    // 3. Carretera
+    // 4. Carretera
     ctx.fillStyle = "#2a2a2a";
     ctx.fillRect(200, 0, 400, 500);
     ctx.strokeStyle = "white"; ctx.lineWidth = 4;
@@ -222,20 +217,17 @@ function draw() {
 
     // Líneas amarillas
     ctx.fillStyle = "yellow";
-    for(let i = -50; i < 550; i += 50) ctx.fillRect(395, i + offsetRoad, 10, 30);
+    for(let i = -50; i < 550; i += 50) ctx.fillRect(395, i + (scrollY % 50), 10, 30);
 
-    // Partículas de humo
+    // Humo, Coche y Power-ups
     particles.forEach(p => {
         ctx.fillStyle = `rgba(200, 200, 200, ${p.opacity})`;
         ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill();
     });
 
-    // Coche y Efectos
     if (hasShield) { ctx.strokeStyle = "cyan"; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(carX+25, carY+40, 45, 0, Math.PI*2); ctx.stroke(); }
-    const img = carImages[carSelected];
-    ctx.drawImage(img, carX, carY, 50, 80);
+    ctx.drawImage(carImages[carSelected], carX, carY, 50, 80);
 
-    // Obstáculos y Power-ups
     obstacles.forEach(obs => ctx.drawImage(imgCono, obs.x - 20, obs.y - 20, 40, 40));
     powerUps.forEach(p => {
         ctx.fillStyle = p.type === 'shield' ? 'cyan' : 'gold';
