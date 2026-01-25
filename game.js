@@ -72,6 +72,40 @@ function initTrees() {
 window.addEventListener('keydown', e => keys[e.code] = true);
 window.addEventListener('keyup', e => keys[e.code] = false);
 
+// --- CONTROLES TÁCTILES (móvil / tablet): tocar mitad izquierda/derecha ---
+function updateTouchKeys(touchList) {
+    let anyLeft = false, anyRight = false;
+    for(let i = 0; i < touchList.length; i++) {
+        const t = touchList[i];
+        // convertir a coordenadas lógicas del juego (BASE_WIDTH)
+        const logicalX = (t.clientX - offsetX) / scale;
+        if(logicalX < (BASE_WIDTH / 2)) anyLeft = true;
+        else anyRight = true;
+    }
+    keys['ArrowLeft'] = anyLeft;
+    keys['ArrowRight'] = anyRight;
+}
+
+window.addEventListener('touchstart', function(e) {
+    updateTouchKeys(e.touches);
+    // evitar que la pantalla haga scroll mientras juegas
+    e.preventDefault();
+}, {passive: false});
+
+window.addEventListener('touchmove', function(e) {
+    updateTouchKeys(e.touches);
+    e.preventDefault();
+}, {passive: false});
+
+window.addEventListener('touchend', function(e) {
+    // en touchend usar e.touches (toques restantes)
+    updateTouchKeys(e.touches);
+}, {passive: true});
+
+window.addEventListener('touchcancel', function(e) {
+    updateTouchKeys(e.touches);
+}, {passive: true});
+
 function selectCar(name) {
     carSelected = name;
     document.getElementById('selected-txt').innerText = "Seleccionado: " + name;
