@@ -148,15 +148,11 @@ function update() {
 
     // Generación de obstáculos
     if(obstacles.length === 0) {
-        let lanes = [170, 330, 490, 650];
         let count = Math.random() > 0.5 ? 2 : 3;
         for(let i=0; i<count; i++) {
-            let x = lanes.splice(Math.floor(Math.random() * lanes.length), 1)[0];
+            // Generar posición X aleatoria dentro del ancho de la carretera (200-600)
+            let x = 220 + Math.random() * 160; // rango de 220 a 380 dentro de la carretera
             obstacles.push({x: x, y: -100 - (i * 150)});
-        }
-        // A veces generamos un cono en el centro de la carretera
-        if(Math.random() > 0.5) {
-            obstacles.push({x: 392, y: -150});
         }
     }
 
