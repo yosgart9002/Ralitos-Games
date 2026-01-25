@@ -51,7 +51,7 @@ let carSelected = null;
 let carX = 175, carY = 400;
 let score = 0, record = 0;
 // Reduce base speed (initial) as requested
-const baseSpeed = 4;
+const baseSpeed = 2;
 let speed = baseSpeed;
 let gameRunning = false;
 let keys = {};
@@ -190,10 +190,10 @@ function draw() {
     const img = carImages[carSelected];
     ctx.save();
     if(carSelected === 'Porsche') {
-        // Rotación especial para tu imagen de Porsche
+        // Rotación especial para tu imagen de Porsche (90° a la izquierda)
         ctx.translate(carX + 25, carY + 40);
-        // rotar 90 grados a la derecha (clockwise)
-        ctx.rotate(Math.PI / 2);
+        // rotar 90 grados a la izquierda (counter-clockwise)
+        ctx.rotate(-Math.PI / 2);
         // usar mismo tamaño que la imagen horizontal (80x50) para que quede vertical
         ctx.drawImage(img, -40, -25, 80, 50);
     } else {
