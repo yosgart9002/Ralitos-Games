@@ -30,6 +30,8 @@ const imgArbol = new Image(); imgArbol.src = 'Arbol.png';
 const imgCono = new Image(); imgCono.src = 'cono.png';
 const imgGradas = new Image(); imgGradas.src = 'Gradas.png';
 const imgGradasIzq = new Image(); imgGradasIzq.src = 'Gradas izq.png';
+const imgEscudo = new Image(); imgEscudo.src = 'Escudo.png';
+const imgCoin = new Image(); imgCoin.src = 'Coin.png';
 
 const carImages = {
     'Honda Fit': new Image(),
@@ -230,9 +232,8 @@ function draw() {
 
     obstacles.forEach(obs => ctx.drawImage(imgCono, obs.x - 30, obs.y - 30, 60, 60));
     powerUps.forEach(p => {
-        ctx.fillStyle = p.type === 'shield' ? 'cyan' : 'gold';
-        ctx.beginPath(); ctx.arc(p.x, p.y, 15, 0, Math.PI * 2); ctx.fill();
-        ctx.fillStyle = "black"; ctx.font = "bold 12px Arial"; ctx.fillText(p.type === 'shield' ? "S" : "T", p.x-4, p.y+5);
+        const img = p.type === 'shield' ? imgEscudo : imgCoin;
+        ctx.drawImage(img, p.x - 15, p.y - 15, 30, 30);
     });
 
     // UI Puntaje
