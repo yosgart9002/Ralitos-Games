@@ -233,7 +233,7 @@ function draw() {
     obstacles.forEach(obs => ctx.drawImage(imgCono, obs.x - 30, obs.y - 30, 60, 60));
     powerUps.forEach(p => {
         const img = p.type === 'shield' ? imgEscudo : imgCoin;
-        ctx.drawImage(img, p.x - 15, p.y - 15, 30, 30);
+        ctx.drawImage(img, p.x - 25, p.y - 25, 50, 50);
     });
 
     // UI Puntaje
