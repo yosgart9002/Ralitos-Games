@@ -51,7 +51,7 @@ const crashSound = new Audio('choque.wav');
 let carSelected = null;
 let carX = 375, carY = 400;
 let score = 0, record = localStorage.getItem('highScore') || 0;
-const baseSpeed = 3;
+const baseSpeed = 6;
 let speed = baseSpeed;
 let gameRunning = false;
 let keys = {};
@@ -129,8 +129,8 @@ function update() {
         speed = baseSpeed + Math.floor(score / 5);
     }
 
-    if(keys['ArrowLeft'] && carX > 210) carX -= 7;
-    if(keys['ArrowRight'] && carX < 540) carX += 7;
+    if(keys['ArrowLeft'] && carX > 210) carX -= 10;
+    if(keys['ArrowRight'] && carX < 540) carX += 10;
 
     offsetRoad = (offsetRoad + speed) % 150;
     if (Math.random() > 0.4) createSmoke();
