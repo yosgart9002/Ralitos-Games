@@ -127,22 +127,22 @@ function update() {
         speed = baseSpeed + Math.floor(score / 5);
     }
 
-    if(keys['ArrowLeft'] && carX > 210) carX -= 7;
-    if(keys['ArrowRight'] && carX < 540) carX += 7;
+    if(keys['ArrowLeft'] && carX > 220) carX -= 7;
+    if(keys['ArrowRight'] && carX < 480) carX += 7;
 
     offsetRoad = (offsetRoad + speed) % 150;
     if (Math.random() > 0.4) createSmoke();
 
     if(obstacles.length === 0) {
-        obstacles.push({x: 230 + Math.random() * 340, y: -100});
+        obstacles.push({x: 240 + Math.random() * 240, y: -100});
         if (Math.random() > 0.8) {
-            powerUps.push({x: 230 + Math.random() * 340, y: -400, type: Math.random() > 0.5 ? 'shield' : 'turbo'});
+            powerUps.push({x: 240 + Math.random() * 240, y: -400, type: Math.random() > 0.5 ? 'shield' : 'turbo'});
         }
     }
 
     obstacles.forEach((obs, i) => {
         obs.y += speed;
-        if(Math.abs((carX + 25) - obs.x) < 35 && Math.abs((carY + 40) - obs.y) < 40) {
+        if(Math.abs((carX + 25) - obs.x) < 45 && Math.abs((carY + 40) - obs.y) < 50) {
             if (hasShield || turboActive) { hasShield = false; obstacles.splice(i, 1); shakeIntensity = 10; }
             else { gameOver(); }
         }
@@ -211,9 +211,9 @@ function draw() {
 
     // 4. Carretera
     ctx.fillStyle = "#2a2a2a";
-    ctx.fillRect(200, 0, 400, 500);
+    ctx.fillRect(200, 0, 300, 500);
     ctx.strokeStyle = "white"; ctx.lineWidth = 4;
-    ctx.strokeRect(200, -10, 400, 520);
+    ctx.strokeRect(200, -10, 300, 520);
 
     // Líneas amarillas
     ctx.fillStyle = "yellow";
@@ -228,7 +228,7 @@ function draw() {
     if (hasShield) { ctx.strokeStyle = "cyan"; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(carX+25, carY+40, 45, 0, Math.PI*2); ctx.stroke(); }
     ctx.drawImage(carImages[carSelected], carX, carY, 50, 80);
 
-    obstacles.forEach(obs => ctx.drawImage(imgCono, obs.x - 20, obs.y - 20, 40, 40));
+    obstacles.forEach(obs => ctx.drawImage(imgCono, obs.x - 30, obs.y - 30, 60, 60));
     powerUps.forEach(p => {
         ctx.fillStyle = p.type === 'shield' ? 'cyan' : 'gold';
         ctx.beginPath(); ctx.arc(p.x, p.y, 15, 0, Math.PI * 2); ctx.fill();
