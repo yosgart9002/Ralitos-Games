@@ -127,16 +127,16 @@ function update() {
         speed = baseSpeed + Math.floor(score / 5);
     }
 
-    if(keys['ArrowLeft'] && carX > 220) carX -= 7;
-    if(keys['ArrowRight'] && carX < 480) carX += 7;
+    if(keys['ArrowLeft'] && carX > 210) carX -= 7;
+    if(keys['ArrowRight'] && carX < 540) carX += 7;
 
     offsetRoad = (offsetRoad + speed) % 150;
     if (Math.random() > 0.4) createSmoke();
 
     if(obstacles.length === 0) {
-        obstacles.push({x: 240 + Math.random() * 240, y: -100});
+        obstacles.push({x: 230 + Math.random() * 340, y: -100});
         if (Math.random() > 0.8) {
-            powerUps.push({x: 240 + Math.random() * 240, y: -400, type: Math.random() > 0.5 ? 'shield' : 'turbo'});
+            powerUps.push({x: 230 + Math.random() * 340, y: -400, type: Math.random() > 0.5 ? 'shield' : 'turbo'});
         }
     }
 
@@ -211,9 +211,9 @@ function draw() {
 
     // 4. Carretera
     ctx.fillStyle = "#2a2a2a";
-    ctx.fillRect(200, 0, 300, 500);
+    ctx.fillRect(200, 0, 400, 500);
     ctx.strokeStyle = "white"; ctx.lineWidth = 4;
-    ctx.strokeRect(200, -10, 300, 520);
+    ctx.strokeRect(200, -10, 400, 520);
 
     // Líneas amarillas
     ctx.fillStyle = "yellow";
