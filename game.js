@@ -51,7 +51,7 @@ const crashSound = new Audio('choque.wav');
 let carSelected = null;
 let carX = 375, carY = 400;
 let score = 0, record = localStorage.getItem('highScore') || 0;
-const baseSpeed = 3;
+const baseSpeed = 8;
 let speed = baseSpeed;
 let gameRunning = false;
 let keys = {};
