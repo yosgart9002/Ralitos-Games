@@ -34,15 +34,15 @@ const imgEscudo = new Image(); imgEscudo.src = 'Escudo.png';
 const imgCoin = new Image(); imgCoin.src = 'Coin.png';
 
 const carImages = {
-    'Honda Fit': new Image(),
-    'Ferrari': new Image(),
-    'Formula 1': new Image(),
-    'Porsche': new Image()
+    'Honda Fat': new Image(),
+    'Fegarri': new Image(),
+    'Formulado 1': new Image(),
+    'Porch': new Image()
 };
-carImages['Honda Fit'].src = 'Honda Fit.png';
-carImages['Ferrari'].src = 'Ferrari.png';
-carImages['Formula 1'].src = 'Formula 1.png';
-carImages['Porsche'].src = 'Porsche.png';
+carImages['Honda Fat'].src = 'Honda Fit.png';
+carImages['Fegarri'].src = 'Ferrari.png';
+carImages['Formulado 1'].src = 'Formula 1.png';
+carImages['Porch'].src = 'Porsche.png';
 
 const music = new Audio('Music.wav'); music.loop = true;
 const crashSound = new Audio('choque.wav');
@@ -51,7 +51,7 @@ const crashSound = new Audio('choque.wav');
 let carSelected = null;
 let carX = 375, carY = 400;
 let score = 0, record = localStorage.getItem('highScore') || 0;
-const baseSpeed = 8;
+const baseSpeed = 3;
 let speed = baseSpeed;
 let gameRunning = false;
 let keys = {};
