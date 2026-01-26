@@ -225,8 +225,8 @@ function draw() {
         ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill();
     });
 
-    if (hasShield) { ctx.strokeStyle = "cyan"; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(carX+25, carY+40, 45, 0, Math.PI*2); ctx.stroke(); }
-    ctx.drawImage(carImages[carSelected], carX, carY, 50, 80);
+    if (hasShield) { ctx.strokeStyle = "cyan"; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(carX+30, carY+50, 55, 0, Math.PI*2); ctx.stroke(); }
+    ctx.drawImage(carImages[carSelected], carX, carY, 60, 100);
 
     obstacles.forEach(obs => ctx.drawImage(imgCono, obs.x - 30, obs.y - 30, 60, 60));
     powerUps.forEach(p => {
