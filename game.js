@@ -34,12 +34,12 @@ const imgEscudo = new Image(); imgEscudo.src = 'Escudo.png';
 const imgCoin = new Image(); imgCoin.src = 'Coin.png';
 
 const carImages = {
-    'Honda Fat': new Image(),
+    'Onda Fit': new Image(),
     'Fegarri': new Image(),
     'Formulado 1': new Image(),
     'Porch': new Image()
 };
-carImages['Honda Fat'].src = 'Honda Fit.png';
+carImages['Onda Fit'].src = 'Honda Fit.png';
 carImages['Fegarri'].src = 'Ferrari.png';
 carImages['Formulado 1'].src = 'Formula 1.png';
 carImages['Porch'].src = 'Porsche.png';
