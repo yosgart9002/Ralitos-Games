@@ -147,7 +147,7 @@ function update() {
 
     obstacles.forEach((obs, i) => {
         obs.y += speed;
-        if(Math.abs((carX + 25) - obs.x) < 41 && Math.abs((carY + 40) - obs.y) < 45) {
+        if(Math.abs((carX + 25) - obs.x) < 37 && Math.abs((carY + 40) - obs.y) < 41) {
             if (hasShield || turboActive) { hasShield = false; obstacles.splice(i, 1); shakeIntensity = 10; }
             else { gameOver(); }
         }
