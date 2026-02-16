@@ -147,7 +147,7 @@ function update() {
 
     obstacles.forEach((obs, i) => {
         obs.y += speed;
-        if(Math.abs((carX + 25) - obs.x) < 45 && Math.abs((carY + 40) - obs.y) < 50) {
+        if(Math.abs((carX + 25) - obs.x) < 41 && Math.abs((carY + 40) - obs.y) < 45) {
             if (hasShield || turboActive) { hasShield = false; obstacles.splice(i, 1); shakeIntensity = 10; }
             else { gameOver(); }
         }
@@ -156,7 +156,7 @@ function update() {
 
     powerUps.forEach((p, i) => {
         p.y += speed;
-        if(Math.abs((carX + 25) - p.x) < 30 && Math.abs((carY + 40) - p.y) < 30) {
+        if(Math.abs((carX + 25) - p.x) < 27 && Math.abs((carY + 40) - p.y) < 27) {
             if(p.type === 'shield') hasShield = true;
             else { turboActive = true; turboTimer = 200; }
             powerUps.splice(i, 1);
