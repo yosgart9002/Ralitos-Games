@@ -136,7 +136,10 @@ function update() {
     if (Math.random() > 0.4) createSmoke();
 
     if(obstacles.length === 0) {
-        obstacles.push({x: 230 + Math.random() * 340, y: -100});
+        const numObstacles = Math.random() > 0.5 ? 2 : 3;
+        for(let i = 0; i < numObstacles; i++) {
+            obstacles.push({x: 230 + Math.random() * 340, y: -100 - (i * 80)});
+        }
         if (Math.random() > 0.8) {
             powerUps.push({x: 230 + Math.random() * 340, y: -400, type: Math.random() > 0.5 ? 'shield' : 'turbo'});
         }
@@ -193,21 +196,17 @@ function draw() {
         ctx.drawImage(imgGradas, standRightX, y, 350, 350);
     }
 
-    // 3. CAPA DE BOSQUE DENSO (Rellenar huecos verdes)
-    // Dibujamos múltiples columnas de árboles muy juntos para que se traslapen
-    // Lado Izquierdo (entre x=100 y x=200)
-    for (let x = 100; x < 200; x += 40) {
-        for (let y = -150 + scrollY; y < 650; y += 30) {
-            // Añadimos un pequeño desvío aleatorio en X basado en Y para que se vea natural
-            let offsetXTree = (Math.sin(y * 0.1) * 10);
-            ctx.drawImage(imgArbol, x + offsetXTree - 35, y - 35, 100, 100);
+    // 3. CAPA DE BOSQUE (Árboles a los costados)
+    // Lado Izquierdo (entre x=100 y x=150)
+    for (let x = 100; x < 150; x += 60) {
+        for (let y = -150 + scrollY; y < 650; y += 80) {
+            ctx.drawImage(imgArbol, x - 35, y - 35, 100, 100);
         }
     }
-    // Lado Derecho (entre x=600 y x=700)
-    for (let x = 600; x < 700; x += 40) {
-        for (let y = -150 + scrollY; y < 650; y += 30) {
-            let offsetXTree = (Math.cos(y * 0.1) * 10);
-            ctx.drawImage(imgArbol, x + offsetXTree - 35, y - 35, 100, 100);
+    // Lado Derecho (entre x=650 y x=700)
+    for (let x = 650; x < 700; x += 60) {
+        for (let y = -150 + scrollY; y < 650; y += 80) {
+            ctx.drawImage(imgArbol, x - 35, y - 35, 100, 100);
         }
     }
 
